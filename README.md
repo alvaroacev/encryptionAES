@@ -2,7 +2,7 @@
 
 Overview:
 ===================
-This project is a fork of <a>https://github.com/mike-ensor/aes-256-encryption-utility</a> and has been enhanced it with  Bouncy Castle AES to demonstrate that one can encrypt with AES/CBC/PKCS5Padding algorithm from Java built-in JCE and decrypt with Bouncy Castle
+This project is a fork of <a>https://github.com/mike-ensor/aes-256-encryption-utility</a> and has been enhanced with  Bouncy Castle AES to demonstrate that one can encrypt with AES/CBC/PKCS5Padding algorithm from Java built-in JCE and decrypt with Bouncy Castle
 
 This is a sample utility to encrypt/decrypt using AES/CBC/PKCS5Padding algorithm
 
@@ -12,7 +12,7 @@ _Most common error_: "Invalid Key Size" error is most likely caused by not updat
 **NOTE:** This example is built using **JDK7**, ultimate strength JCE (JDK7) and [Maven 3.x](http://maven.apache.org "Maven Documentation")
 
  - [Unlimited Strength Policy JDK7](http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html "Unlimited Strength Policy for JDK7")
- - JDK must have the unlimited strength policy for the JDK version
+ - JDK must have the unlimited strength policy for the JDK version unless you encrypt with EAS-128 or less, Unit Test run with 128-bit by calling JCEKS alias jceksaes128Bits
 
 
 <a name="run"></a>To Run:
