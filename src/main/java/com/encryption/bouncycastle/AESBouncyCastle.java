@@ -1,5 +1,7 @@
 package com.encryption.bouncycastle;
 
+import java.util.Arrays;
+
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -30,16 +32,20 @@ public class AESBouncyCastle {
 		return processing(input, false);
 	}
 
-	private byte[] processing(byte[] input, boolean encrypt) throws DataLengthException, InvalidCipherTextException {
+	private byte[] processing(byte[] input, boolean encrypt) throws DataLengthException {
 
 		pbbc.init(encrypt, key);
-		int length = encrypt ? pbbc.getOutputSize(input.length) : pbbc.getOutputSize(input.length)-1;
-		byte[] output = new byte[length];
-		int bytesWrittenOut = pbbc.processBytes(input, 0, input.length, output, 0);
-
-		pbbc.doFinal(output, bytesWrittenOut);
-
-		return output;
-
+		byte[] output = new byte[pbbc.getOutputSize(input.length)];
+		int length = pbbc.processBytes(input, 0, input.length, output, 0);
+		try {
+			length += pbbc.doFinal(output, length);
+		} catch (IllegalStateException | InvalidCipherTextException e) {
+			throw new IllegalArgumentException(e);
+		} 
+		
+		if (length < output.length) {
+	        return Arrays.copyOfRange(output, 0, length);
+	    }
+	    return output;
 	}
 }

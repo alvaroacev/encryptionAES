@@ -3,6 +3,7 @@ package com.encryption.bouncycastle;
 import static org.junit.Assert.assertEquals;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.KeyGenerator;
@@ -15,11 +16,12 @@ import org.bouncycastle.util.encoders.Base64;
 import org.junit.Test;
 
 import com.encryption.jce.AESCipher;
+import com.google.common.base.Charsets;
 
 public class AESBouncyCastleTest {
 
 	@Test
-	public void test() throws UnsupportedEncodingException, DataLengthException, InvalidCipherTextException, NoSuchAlgorithmException {
+	public void testEncryptDecrypt() throws UnsupportedEncodingException, DataLengthException, InvalidCipherTextException, NoSuchAlgorithmException {
 		KeyGenerator kg = KeyGenerator.getInstance("AES");
 		kg.init(256);
 		SecretKey sk = kg.generateKey();
@@ -29,11 +31,9 @@ public class AESBouncyCastleTest {
 		abc.setKey(sk.getEncoded());
 
 		String secret = "This is a secret message!";
-		System.out.println(secret);
-		byte[] ba = secret.getBytes("UTF-8");
+		byte[] ba = secret.getBytes(Charsets.UTF_8);
 
 		byte[] encr = abc.encrypt(ba);
-		System.out.println("Encrypted : " + new String(Base64.encode(encr)));
 		byte[] retr = abc.decrypt(encr);
 
 		if (retr.length == ba.length) {
@@ -42,11 +42,11 @@ public class AESBouncyCastleTest {
 			System.arraycopy(retr, 0, ba, 0, ba.length);
 		}
 
-		assertEquals(secret, new String(ba, "UTF-8"));
+		assertEquals(secret, new String(ba, Charsets.UTF_8));
 	}
 	
 	@Test
-	public void encryptJCEdecryptBouncy() throws UnsupportedEncodingException, DataLengthException, InvalidCipherTextException, NoSuchAlgorithmException {
+	public void testEncryptJCEdecryptBouncy() throws UnsupportedEncodingException, DataLengthException, InvalidCipherTextException, NoSuchAlgorithmException {
 		
 		String key = "770A8A65DA156D24";
         AESCipher cipher = new AESCipher(key.getBytes("UTF-8"));
