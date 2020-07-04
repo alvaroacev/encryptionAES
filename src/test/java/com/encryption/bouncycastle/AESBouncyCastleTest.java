@@ -3,7 +3,6 @@ package com.encryption.bouncycastle;
 import static org.junit.Assert.assertEquals;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.KeyGenerator;
@@ -12,7 +11,6 @@ import javax.crypto.SecretKey;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.bouncycastle.crypto.paddings.PKCS7Padding;
-import org.bouncycastle.util.encoders.Base64;
 import org.junit.Test;
 
 import com.encryption.jce.AESCipher;

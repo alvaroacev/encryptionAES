@@ -1,7 +1,10 @@
 package com.encryption.jce;
 
-import com.google.common.base.Throwables;
-import com.google.common.io.BaseEncoding;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -9,17 +12,12 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
+
+import com.google.common.io.BaseEncoding;
 
 public class AESCipher {
 
-    private static final String ALGORITHM_AES256 = "AES/CBC/PKCS5Padding";
-    // ECP, default
-//    private static final String ALGORITHM_AES256 = "AES";
+    private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
     private static final byte[] INITIAL_IV = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private final SecretKeySpec secretKeySpec;
     private final Cipher cipher;
@@ -54,13 +52,13 @@ public class AESCipher {
         this(key, INITIAL_IV);
     }
 
-    private AESCipher(byte[] key, byte[] iv) {
+    public AESCipher(byte[] key, byte[] iv) {
         try {
             this.secretKeySpec = new SecretKeySpec(key, "AES");
             this.iv = new IvParameterSpec(iv);
-            this.cipher = Cipher.getInstance(ALGORITHM_AES256);
+            this.cipher = Cipher.getInstance(ALGORITHM);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-            throw Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -78,7 +76,7 @@ public class AESCipher {
 
             return BaseEncoding.base64().encode(encryptedTextBytes);
         } catch (IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException | InvalidKeyException | InvalidAlgorithmParameterException e) {
-            throw Throwables.propagate(e);
+        	throw new RuntimeException(e);
         }
     }
     
@@ -96,7 +94,7 @@ public class AESCipher {
 
             return encryptedTextBytes;
         } catch (IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException | InvalidKeyException | InvalidAlgorithmParameterException e) {
-            throw Throwables.propagate(e);
+        	throw new RuntimeException(e);
         }
     }
 
@@ -115,7 +113,7 @@ public class AESCipher {
 
             return new String(decryptedTextBytes);
         } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException | InvalidAlgorithmParameterException e) {
-            throw Throwables.propagate(e);
+        	throw new RuntimeException(e);
         }
     }
 
